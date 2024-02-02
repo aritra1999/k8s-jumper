@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { Armchair, ChevronRightIcon } from 'lucide-svelte';
+	import { Input } from '$lib/components/ui/input';
+	import { Armchair, ChevronRightIcon, Search, X } from 'lucide-svelte';
 
 	export let data;
 
@@ -13,6 +14,8 @@
 	let selectedContext = '';
 	let selectedNamespace = '';
 	let selectedResource = '';
+
+	let showContextSearch = false;
 
 	const loadNameSpaces = async (context: string) => {
 		selectedContext = context;
@@ -66,8 +69,31 @@
 	</div>
 </div>
 <div class="flex h-screen w-screen overflow-x-hidden overflow-y-hidden pt-16">
-	<div class="h-screen w-1/3 overflow-y-auto border-r p-4">
-		<h2 class="mb-2 border-b-2 pb-2 text-xl font-bold">Contexts</h2>
+	<div class="h-screen w-1/3 overflow-y-auto border-r p-2">
+		<div class="mb-2 flex items-center justify-between border-b-2 pb-2">
+			<div class="mr-2 w-full">
+				{#if showContextSearch}
+					<Input type="text" class="w-full" />
+				{:else}
+					<h2 class="text-xl font-bold">Contexts</h2>
+				{/if}
+			</div>
+			<div>
+				<Button
+					variant="secondary"
+					size="icon"
+					on:click={() => {
+						showContextSearch = !showContextSearch;
+					}}
+				>
+					{#if showContextSearch}
+						<X class="h-4 w-4" />
+					{:else}
+						<Search class="h-4 w-4" />
+					{/if}
+				</Button>
+			</div>
+		</div>
 		{#if data && data.contexts}
 			<div class="context pb-16">
 				{#each data.contexts as context}
