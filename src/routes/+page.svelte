@@ -1,144 +1,58 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
-	import { Armchair, ChevronRightIcon, Search, X } from 'lucide-svelte';
+	import { Armchair } from 'lucide-svelte';
+	import { loadingStore, namespacesStore, resourcesStore } from '$lib/store.js';
+	import Contexts from '$lib/components/ui/context/contexts.svelte';
+	import Namespaces from '$lib/components/ui/namespace/namespaces.svelte';
+	import Resources from '$lib/components/ui/resource/resources.svelte';
 
 	export let data;
+	const DEFAULT_RESOURCE_TYPE = 'pods';
+	let namespaces: any[];
+	let resources: any[];
 
-	let loadingNamespace = false;
-	let loadingResource = false;
-
-	let namespaces: any[] = [];
-	let resources: any[] = [];
-
-	let selectedContext = '';
-	let selectedNamespace = '';
-	let selectedResource = '';
-
-	let showContextSearch = false;
-
-	const loadNameSpaces = async (context: string) => {
-		selectedContext = context;
-
-		loadingNamespace = true;
-		namespaces = await fetch(`http://localhost:5173/api/namespace/${context}`)
-			.then((res) => res.json())
-			.catch((err) => {
-				console.log(err);
-			});
-
-		loadingNamespace = false;
+	const loadNamespaces = async (contextName: string) => {
+		$loadingStore.namespaces = true;
+		const namespacesResponse = await fetch(`/api/namespace/${contextName}`);
+		namespaces = await namespacesResponse.json();
+		namespacesStore.set({
+			context: contextName,
+			items: namespaces as never[]
+		});
+		$loadingStore.namespaces = false;
 	};
 
-	const loadResources = async (context: string, namespace: string, resourceType: string) => {
-		selectedContext = context;
-		selectedNamespace = namespace;
+	const loadResources = async (contextName: string, namespaceName: string) => {
+		$loadingStore.resources = true;
+		const resourcesResponse = await fetch(
+			`/api/resource/${contextName}/${namespaceName}/${DEFAULT_RESOURCE_TYPE}`
+		);
+		resources = await resourcesResponse.json();
+		resourcesStore.set({
+			context: contextName,
+			namespace: namespaceName,
+			items: resources as never[]
+		});
 
-		loadingResource = true;
-		resources = await fetch(
-			`http://localhost:5173/api/resource/${context}/${namespace}/${resourceType}`
-		)
-			.then((res) => res.json())
-			.catch((err) => {
-				console.log(err);
-			});
-
-		loadingResource = false;
+		$loadingStore.resources = false;
 	};
 </script>
 
-<div class="fixed flex h-16 w-screen border-b">
-	<div class="container mx-auto flex items-center justify-between">
-		<div class=" flex items-center justify-between">
-			<div class="mr-4">
-				<Armchair class="h-5 w-5" />
-			</div>
-			<div class="flex items-center">
-				<span>
-					{#if selectedContext !== ''}{selectedContext}{/if}
-				</span>
-				<span class="flex items-center">
-					{#if selectedNamespace !== ''}
-						<ChevronRightIcon class="mx-2 h-4 w-4" />
-						{selectedNamespace}
-					{/if}
-				</span>
-			</div>
-		</div>
-		<div></div>
+<div class="fixed flex h-16 w-screen border-b px-4">
+	<div class=" flex items-center justify-between">
+		<Armchair class="h-5 w-5" />
 	</div>
 </div>
-<div class="flex h-screen w-screen overflow-x-hidden overflow-y-hidden pt-16">
-	<div class="h-screen w-1/3 overflow-y-auto border-r p-2">
-		<div class="mb-2 flex items-center justify-between border-b-2 pb-2">
-			<div class="mr-2 w-full">
-				{#if showContextSearch}
-					<Input type="text" class="w-full" />
-				{:else}
-					<h2 class="text-xl font-bold">Contexts</h2>
-				{/if}
-			</div>
-			<div>
-				<Button
-					variant="secondary"
-					size="icon"
-					on:click={() => {
-						showContextSearch = !showContextSearch;
-					}}
-				>
-					{#if showContextSearch}
-						<X class="h-4 w-4" />
-					{:else}
-						<Search class="h-4 w-4" />
-					{/if}
-				</Button>
-			</div>
-		</div>
-		{#if data && data.contexts}
-			<div class="context pb-16">
-				{#each data.contexts as context}
-					<Button
-						disabled={loadingNamespace || loadingResource}
-						class="w-full justify-start"
-						variant={selectedContext === context.name ? 'secondary' : 'ghost'}
-						on:click={() => loadNameSpaces(context.name)}>{context.name}</Button
-					>
-				{/each}
-			</div>
+
+<section class="flex h-screen w-screen overflow-x-hidden overflow-y-hidden pt-16">
+	{#await data.contexts}
+		Loading contexts ...
+	{:then contexts}
+		<Contexts {contexts} {loadNamespaces} />
+		{#if namespaces}
+			<Namespaces {namespaces} {loadResources} />
 		{/if}
-	</div>
-	<div class="h-screen w-1/3 overflow-y-auto border-r p-4">
-		<h2 class="mb-2 border-b-2 pb-2 text-xl font-bold">Namespaces</h2>
-		{#if !loadingNamespace}
-			{#if namespaces}
-				<div class="namespace pb-16">
-					{#each namespaces as namespace}
-						<Button
-							disabled={loadingNamespace || loadingResource}
-							class="w-full justify-start"
-							variant={selectedNamespace === namespace.metadata.name ? 'secondary' : 'ghost'}
-							on:click={() => loadResources(selectedContext, namespace.metadata.name, 'pods')}
-							>{namespace.metadata.name}</Button
-						>
-					{/each}
-				</div>
-			{/if}
-		{:else}
-			Loading namespaces...
+		{#if resources}
+			<Resources type={DEFAULT_RESOURCE_TYPE} {resources} />
 		{/if}
-	</div>
-	<div class="h-screen w-1/3 overflow-y-auto border-r p-4">
-		<h2 class="mb-2 border-b-2 pb-2 text-xl font-bold">Resources</h2>
-		{#if !loadingResource}
-			{#if resources}
-				{#each resources as resource}
-					<div class="namespace">
-						<Button variant="ghost" class="w-full justify-start">{resource.metadata.name}</Button>
-					</div>
-				{/each}
-			{/if}
-		{:else}
-			Loading resources...
-		{/if}
-	</div>
-</div>
+	{/await}
+</section>
