@@ -11,29 +11,42 @@
 	let resources: any[];
 
 	const loadNamespaces = async (contextName: string) => {
+		namespacesStore.set({
+			context: '',
+			items: []
+		});
+
 		$loadingStore.namespaces = true;
 		const namespacesResponse = await fetch(`/api/namespace/${contextName}`);
 		namespaces = await namespacesResponse.json();
+		resources = [];
+		$loadingStore.namespaces = false;
+
 		namespacesStore.set({
 			context: contextName,
 			items: namespaces as never[]
 		});
-		$loadingStore.namespaces = false;
 	};
 
 	const loadResources = async (contextName: string, namespaceName: string) => {
+		resourcesStore.set({
+			context: '',
+			namespace: '',
+			items: []
+		});
+
 		$loadingStore.resources = true;
 		const resourcesResponse = await fetch(
 			`/api/resource/${contextName}/${namespaceName}/${DEFAULT_RESOURCE_TYPE}`
 		);
 		resources = await resourcesResponse.json();
+		$loadingStore.resources = false;
+
 		resourcesStore.set({
 			context: contextName,
 			namespace: namespaceName,
 			items: resources as never[]
 		});
-
-		$loadingStore.resources = false;
 	};
 </script>
 
@@ -48,11 +61,7 @@
 		Loading contexts ...
 	{:then contexts}
 		<Contexts {contexts} {loadNamespaces} />
-		{#if namespaces}
-			<Namespaces {namespaces} {loadResources} />
-		{/if}
-		{#if resources}
-			<Resources type={DEFAULT_RESOURCE_TYPE} {resources} />
-		{/if}
+		<Namespaces {namespaces} {loadResources} />
+		<Resources type={DEFAULT_RESOURCE_TYPE} {resources} />
 	{/await}
 </section>
