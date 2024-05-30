@@ -2,6 +2,7 @@
 	import Navbar from '$lib/components/ui/nav/navbar.svelte';
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.pcss';
+	import '../fonts.pcss';
 </script>
 
 <ModeWatcher />
