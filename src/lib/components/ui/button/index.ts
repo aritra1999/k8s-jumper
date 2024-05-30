@@ -32,7 +32,7 @@ type Size = VariantProps<typeof buttonVariants>['size'];
 type Props = ButtonPrimitive.Props & {
 	variant?: Variant;
 	size?: Size;
-	fancy: boolean;
+	fancy?: boolean;
 };
 
 type Events = ButtonPrimitive.Events;
