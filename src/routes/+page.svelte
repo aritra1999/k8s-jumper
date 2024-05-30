@@ -5,6 +5,6 @@
 <section class="flex h-screen w-full items-center justify-center">
 	<div>
 		<h2 class="mb-5">welcome to k8sx...</h2>
-		<Button>getting started</Button>
+		<Button fancy={true}>getting started</Button>
 	</div>
 </section>
