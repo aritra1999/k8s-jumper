@@ -3,6 +3,7 @@
 	import Contexts from '$lib/components/ui/context/contexts.svelte';
 	import Namespaces from '$lib/components/ui/namespace/namespaces.svelte';
 	import Resources from '$lib/components/ui/resource/resources.svelte';
+	import Loader from '$lib/components/ui/loader/loader.svelte';
 
 	export let data;
 	const DEFAULT_RESOURCE_TYPE = 'pods';
@@ -51,7 +52,9 @@
 
 <section class="flex h-screen w-full overflow-x-hidden overflow-y-hidden">
 	{#await data.contexts}
-		Loading contexts ...
+		<div class="flex h-full w-full items-center justify-center">
+			<Loader message="Loading contexts" />
+		</div>
 	{:then contexts}
 		<Contexts {contexts} {loadNamespaces} />
 		<Namespaces {namespaces} {loadResources} />
