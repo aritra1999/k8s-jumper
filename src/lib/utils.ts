@@ -1,7 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import _ from 'lodash';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
+
+export const SEARCH_THRESHOLD = 1;
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -60,3 +63,17 @@ export const addDots = (element: HTMLElement, length: number) => {
 		element.innerText = element.innerText.slice(0, length) + '...';
 	}
 };
+
+export function filterItemListBySearchString(
+	items: unknown[],
+	searchString: string,
+	selector: string
+): unknown[] {
+	if (searchString.length >= SEARCH_THRESHOLD) {
+		const searchTerm = searchString.toLocaleLowerCase();
+		return items.filter((item: unknown) =>
+			_.get(item, selector).toLowerCase().includes(searchTerm)
+		);
+	}
+	return items;
+}

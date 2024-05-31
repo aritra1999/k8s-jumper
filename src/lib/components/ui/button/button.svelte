@@ -14,15 +14,15 @@
 	export { className as class };
 </script>
 
-{#if fancy}
-	<ButtonPrimitive.Root
-		{builders}
-		class={cn(buttonVariants({ variant, size, className }))}
-		type="button"
-		{...$$restProps}
-		on:click
-		on:keydown
-	>
+<ButtonPrimitive.Root
+	{builders}
+	class={cn(buttonVariants({ variant, size, className }))}
+	type="button"
+	{...$$restProps}
+	on:click
+	on:keydown
+>
+	{#if fancy}
 		<span
 			class="absolute inset-0 h-full w-full translate-x-1 translate-y-1 transform bg-foreground transition duration-200 ease-out group-hover:-translate-x-0 group-hover:-translate-y-0"
 		>
@@ -36,18 +36,9 @@
 		>
 			<slot />
 		</span>
-	</ButtonPrimitive.Root>
-{:else}
-	<ButtonPrimitive.Root
-		{builders}
-		class={cn(buttonVariants({ variant, size, className }))}
-		type="button"
-		{...$$restProps}
-		on:click
-		on:keydown
-	>
-		<span class="relative flex w-full items-center justify-center text-foreground">
+	{:else}
+		<span class="relative flex w-full items-center justify-center">
 			<slot />
 		</span>
-	</ButtonPrimitive.Root>
-{/if}
+	{/if}
+</ButtonPrimitive.Root>

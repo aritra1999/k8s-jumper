@@ -27,7 +27,7 @@
 		});
 	};
 
-	const loadResources = async (contextName: string, namespaceName: string) => {
+	const loadResources = async (namespaceName: string, contextName: string) => {
 		resourcesStore.set({
 			context: '',
 			namespace: '',

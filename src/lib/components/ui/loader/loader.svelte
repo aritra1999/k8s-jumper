@@ -4,7 +4,7 @@
 	export let message: string = '';
 </script>
 
-<div class="flex items-center">
+<div class="clash flex items-center font-semibold">
 	{message}
 	<Loader2 class="ml-2  h-4 w-4 animate-spin" />
 </div>

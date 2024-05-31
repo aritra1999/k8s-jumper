@@ -2,7 +2,16 @@
 	import { page } from '$app/stores';
 	import ThemeToggle from '$lib/components/ui/nav/toggle.svelte';
 	import { cn } from '$lib/utils';
-	import { Sun, FileClock, Github, Database, Home, Telescope, CircleHelp } from 'lucide-svelte';
+	import {
+		Sun,
+		FileClock,
+		Github,
+		Database,
+		Home,
+		Telescope,
+		CircleHelp,
+		SquareTerminal
+	} from 'lucide-svelte';
 
 	const navbarItemSections = [
 		[
@@ -14,11 +23,18 @@
 				color: 'text-zinc-900 bg-fuchsia-200'
 			},
 			{
-				name: 'K8s',
+				name: 'K8sX',
 				icon: Telescope,
-				link: '/k8s',
+				link: '/k8sx',
 				hover: 'hover:text-zinc-900 hover:bg-blue-200',
 				color: 'text-zinc-900 bg-blue-200'
+			},
+			{
+				name: 'K8sU',
+				icon: SquareTerminal,
+				link: '/k8su',
+				hover: 'hover:text-zinc-900 hover:bg-orange-200',
+				color: 'text-zinc-900 bg-orange-200'
 			},
 			{
 				name: 'Database',

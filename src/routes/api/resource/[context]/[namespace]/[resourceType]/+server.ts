@@ -1,15 +1,16 @@
-import { cmd } from '$lib/commands';
-import { json } from '@sveltejs/kit'
+import { k8sApi } from '$lib/k8s';
+import { json } from '@sveltejs/kit';
 
 export async function GET({ params }) {
-    const namespace = params.namespace;
-    const resourceType = params.resourceType;
-    const context = params.context;
-    
-    const command = `kubectl get ${resourceType} --context=${context} --namespace=${namespace} -o json`
+	const namespace = params.namespace;
+	const resourceType = params.resourceType;
+	const context = params.context;
 
-    const config = await cmd(command);
-    const resources = JSON.parse(config).items;
-    
-    return json(resources)
+	if (resourceType === 'pods') {
+		const response = await k8sApi.listNamespacedPod(namespace, context);
+		const namespaces = response.body.items;
+		return json(namespaces);
+	}
+
+	return json({});
 }
