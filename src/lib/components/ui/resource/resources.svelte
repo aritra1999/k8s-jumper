@@ -1,8 +1,10 @@
 <script lang="ts">
-	import List from '$lib/components/ui/k8s/list.svelte';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import Description from '$lib/components/ui/k8s/description.svelte';
 	import Search from '$lib/components/ui/k8s/search.svelte';
 	import Loader from '$lib/components/ui/loader/loader.svelte';
 	import { loadingStore } from '$lib/store';
+	import { addDots, cn } from '$lib/utils';
 
 	export let resources: any;
 	export let type: string;
@@ -17,12 +19,20 @@
 			<Loader message="Loading resources" />
 		</div>
 	{:else if filteredItems}
-		<List
-			items={filteredItems}
-			buttonConfig={{
-				disabled: false,
-				displayName: 'metadata.name'
-			}}
-		/>
+		<div class="context h-full overflow-y-auto pb-16">
+			{#each filteredItems as item}
+				<div
+					class={cn(
+						buttonVariants({ variant: 'ghost' }),
+						'flex w-full items-center justify-between'
+					)}
+				>
+					<div use:addDots={30}>{item.metadata.name}</div>
+					<div>
+						<Description name={item.metadata.name} />
+					</div>
+				</div>
+			{/each}
+		</div>
 	{/if}
 </div>
