@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import ThemeToggle from '$lib/components/ui/nav/toggle.svelte';
 	import { cn } from '$lib/utils';
 	import {
@@ -97,7 +98,14 @@
 								{#if navbarItem.name === 'Theme Toggle'}
 									<ThemeToggle />
 								{:else}
-									<svelte:component this={navbarItem.icon} class="h-5 w-5" />
+									<Tooltip.Root>
+										<Tooltip.Trigger asChild let:builder>
+											<svelte:component this={navbarItem.icon} class="h-5 w-5" />
+										</Tooltip.Trigger>
+										<Tooltip.Content>
+											<p>{navbarItem.name}</p>
+										</Tooltip.Content>
+									</Tooltip.Root>
 								{/if}
 							</li>
 						</a>
