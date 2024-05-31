@@ -4,12 +4,15 @@
 	import List from '$lib/components/ui/k8s/list.svelte';
 	import Loader from '$lib/components/ui/loader/loader.svelte';
 	import { loadingStore } from '$lib/store';
-	import { addDots } from '$lib/utils';
+	import { addDots, filterItemListBySearchString } from '$lib/utils';
 	import { Search, X } from 'lucide-svelte';
 
 	export let resources: any;
 	export let type: string;
+	let searchFor: string = '';
 	let showResourcesSearch = false;
+
+	$: filteredItems = filterItemListBySearchString(resources, searchFor, 'metadata.name');
 </script>
 
 <div class="h-full w-1/3">
@@ -17,11 +20,11 @@
 		<div class="flex h-full items-center justify-center">
 			<Loader message="Loading resources" />
 		</div>
-	{:else if resources}
+	{:else if filteredItems}
 		<div class="flex items-center justify-between border-b-2 border-foreground p-2.5">
 			<div class="mr-2 w-full">
 				{#if showResourcesSearch}
-					<Input type="text" class="w-full" />
+					<Input type="text" class="w-full" bind:value={searchFor} />
 				{:else}
 					<h4 class="pl-2">{type}</h4>
 				{/if}
@@ -32,6 +35,7 @@
 					size="icon"
 					on:click={() => {
 						showResourcesSearch = !showResourcesSearch;
+						filteredItems = resources;
 					}}
 				>
 					{#if showResourcesSearch}
@@ -43,7 +47,7 @@
 			</div>
 		</div>
 		<List
-			items={resources}
+			items={filteredItems}
 			buttonConfig={{
 				disabled: false,
 				displayName: 'metadata.name'

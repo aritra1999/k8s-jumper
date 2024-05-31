@@ -35,6 +35,7 @@
 					size="icon"
 					on:click={() => {
 						toggleSearch = !toggleSearch;
+						filteredItems = namespaces;
 					}}
 				>
 					{#if toggleSearch}
