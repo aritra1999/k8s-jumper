@@ -9,7 +9,7 @@
 	let filteredItems = contexts;
 </script>
 
-<div class="w-1/3 border-r-2 border-foreground">
+<div class="w-[27%] border-r-2 border-foreground">
 	{#if filteredItems}
 		<Search items={contexts} bind:filteredItems selector="name" title="contexts" />
 		<List

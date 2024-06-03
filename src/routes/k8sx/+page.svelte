@@ -50,7 +50,7 @@
 	};
 </script>
 
-<section class="flex h-screen w-full overflow-x-hidden overflow-y-hidden">
+<section class="flex h-full w-full overflow-x-hidden overflow-y-hidden">
 	{#await data.contexts}
 		<div class="flex h-full w-full items-center justify-center">
 			<Loader message="Loading contexts" />
