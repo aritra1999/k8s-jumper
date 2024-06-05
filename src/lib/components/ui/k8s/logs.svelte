@@ -4,46 +4,74 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Loader from '$lib/components/ui/loader/loader.svelte';
-	import { onMount } from 'svelte';
+	import { scrollToBottom } from '$lib/utils';
+	import LogLine from '$lib/components/ui/k8s/log-line.svelte';
 
-	export let podName: string;
-	let logs: string;
-	let loading = true;
-
-	const fetchLogs = async (podName: string) => {
-		const response = await fetch(
-			`/api/logs/${$resourcesStore.context}/${$resourcesStore.namespace}/${podName}`
-		);
-		logs = await response.json();
-		loading = false;
+	export let pod: {
+		name: string;
+		container: string;
 	};
 
-	onMount(async () => {
-		await fetchLogs(podName);
-	});
+	let reader: ReadableStreamDefaultReader | null = null;
+	let logs: string[] = [];
+	let logElement: HTMLElement;
+	let loading = true;
+
+	const subscribe = async () => {
+		const response = await fetch(
+			`/api/logs/${pod.container}/${$resourcesStore.namespace}/${pod.name}`
+		);
+
+		loading = false;
+		scrollToBottom(logElement);
+
+		if (response.body === null) {
+			throw new Error('Unable to stream logs, please try again later!');
+		}
+
+		reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+		while (true) {
+			const { value, done } = await reader.read();
+			if (done) break;
+			logs.push(value);
+			logs = logs;
+			scrollToBottom(logElement);
+		}
+	};
+
+	const unsubscribe = async () => {
+		if (reader) {
+			reader.cancel();
+		}
+	};
 </script>
 
 <Sheet.Root>
 	<Sheet.Trigger asChild let:builder>
-		<Button builders={[builder]} size="icon" variant="ghost">
+		<Button builders={[builder]} on:click={subscribe} size="icon" variant="ghost">
 			<FileClock class="h-4 w-4" />
 		</Button>
 	</Sheet.Trigger>
 	<Sheet.Content side="right">
 		<Sheet.Header>
-			<Sheet.Title>{podName}</Sheet.Title>
+			<Sheet.Title>
+				{$resourcesStore.context} / {$resourcesStore.namespace} / {pod.name} / {pod.container}
+			</Sheet.Title>
 		</Sheet.Header>
-		<div class="h-[calc(100vh-7rem)] py-4">
-			<!-- <Editor code={JSON.stringify(description, null, 2)} language="json" /> -->
+		<div class="h-[calc(100vh-7rem)] w-full overflow-auto py-8" bind:this={logElement}>
 			{#if loading}
 				<Loader message="Loading logs" />
 			{:else}
-				{logs}
+				<div class="rounded-md bg-background p-4">
+					{#each logs as log}
+						<LogLine {log} />
+					{/each}
+				</div>
 			{/if}
 		</div>
 		<Sheet.Footer>
 			<Sheet.Close asChild let:builder>
-				<Button builders={[builder]} fancy={true}>Close</Button>
+				<Button builders={[builder]} on:click={unsubscribe} fancy={true}>Close</Button>
 			</Sheet.Close>
 		</Sheet.Footer>
 	</Sheet.Content>
