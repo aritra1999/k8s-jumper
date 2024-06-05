@@ -45,7 +45,12 @@
 							<Table.Cell>10m</Table.Cell>
 							<Table.Cell class="flex items-center space-x-2">
 								<Description description={item.metadata} />
-								<Logs podName={item.metadata.name} />
+								<Logs
+									pod={{
+										name: item.metadata.name,
+										container: item.status.containerStatuses[0].name
+									}}
+								/>
 							</Table.Cell>
 						</Table.Row>
 					{/each}
