@@ -57,7 +57,7 @@
 		</div>
 	{:then contexts}
 		<Contexts {contexts} {loadNamespaces} />
-		<Namespaces {namespaces} {loadResources} />
-		<Resources type={DEFAULT_RESOURCE_TYPE} {resources} />
+		<Namespaces bind:namespaces {loadResources} />
+		<Resources type={DEFAULT_RESOURCE_TYPE} bind:resources />
 	{/await}
 </section>
