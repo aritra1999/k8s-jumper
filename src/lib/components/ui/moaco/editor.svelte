@@ -5,6 +5,7 @@
 
 	export let code: string;
 	export let language: string;
+	export let readOnly = true;
 
 	let editor: Monaco.editor.IStandaloneCodeEditor;
 	let monaco: typeof Monaco;
@@ -12,7 +13,9 @@
 
 	onMount(async () => {
 		monaco = (await import('./monaco')).default;
-		const editor = await monaco.editor.create(editorContainer);
+		const editor = await monaco.editor.create(editorContainer, {
+			readOnly
+		});
 
 		monaco.editor.defineTheme('vesper', theme as Monaco.editor.IStandaloneThemeData);
 		monaco.editor.setTheme('vesper');
@@ -27,4 +30,6 @@
 	});
 </script>
 
-<div class="h-full w-full" bind:this={editorContainer} />
+<div class="h-full">
+	<div class="h-full w-full" bind:this={editorContainer} />
+</div>
