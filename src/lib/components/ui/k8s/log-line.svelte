@@ -1,7 +1,22 @@
 <script lang="ts">
-	export let log: string;
+	export let logChunk: string;
+	const logs = logChunk.split('\n');
+
+	const cleanLog = (log: string) => {
+		try {
+			return JSON.stringify(JSON.parse(log));
+		} catch (e) {
+			return log;
+		}
+	};
 </script>
 
-<div class="jb-mono inline-block w-full px-4 text-sm" lang="json">
-	{log}
-</div>
+{#each logs as log}
+	{#if log}
+		<div class="jb-mono w-full border-b py-2 text-xs">
+			<code class="inline-block w-full" lang="json">
+				{cleanLog(log)}
+			</code>
+		</div>
+	{/if}
+{/each}

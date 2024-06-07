@@ -35,7 +35,7 @@
 			if (done) break;
 			logs.push(value);
 			logs = logs;
-			scrollToBottom(logElement);
+			if (logElement) scrollToBottom(logElement);
 		}
 	};
 
@@ -62,15 +62,16 @@
 			{#if loading}
 				<Loader message="Loading logs" />
 			{:else}
-				<div class="rounded-md bg-background p-4">
-					{#each logs as log}
-						<LogLine {log} />
+				<div class="h-[calc(100vh-8rem)] rounded-md bg-background">
+					{#each logs as logChunk}
+						<LogLine {logChunk} />
 					{/each}
 				</div>
 			{/if}
 		</div>
 		<Sheet.Footer>
 			<Sheet.Close asChild let:builder>
+				<Button fancy={true} on:click={unsubscribe}>Stop streaming</Button>
 				<Button builders={[builder]} on:click={unsubscribe} fancy={true}>Close</Button>
 			</Sheet.Close>
 		</Sheet.Footer>
