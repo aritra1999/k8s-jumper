@@ -13,7 +13,7 @@ export async function GET({ params }) {
 	const req = await log.log(namespace, podName, container, logStream, {
 		follow: true,
 		tailLines: 50,
-		pretty: false,
+		pretty: true,
 		timestamps: false
 	});
 
