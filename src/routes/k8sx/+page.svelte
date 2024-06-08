@@ -58,6 +58,8 @@
 	{:then contexts}
 		<Contexts {contexts} {loadNamespaces} />
 		<Namespaces bind:namespaces {loadResources} />
-		<Resources type={DEFAULT_RESOURCE_TYPE} bind:resources />
+		{#key resources}
+			<Resources type={DEFAULT_RESOURCE_TYPE} {resources} />
+		{/key}
 	{/await}
 </section>

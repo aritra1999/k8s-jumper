@@ -5,7 +5,7 @@
 	import { Input } from '$lib/components/ui/input';
 
 	export let items;
-	export let filteredItems;
+	export let filteredItems = [];
 	export let selector: string;
 	export let title: string;
 
