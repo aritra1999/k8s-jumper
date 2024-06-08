@@ -10,7 +10,7 @@
 	let filteredItems = namespaces;
 </script>
 
-<div class="h-full w-1/3 border-r-2 border-foreground">
+<div class="h-full w-[27%] border-r-2 border-foreground">
 	<Search items={namespaces} bind:filteredItems selector="metadata.name" title="namespaces" />
 	{#if $loadingStore.namespaces}
 		<div class="flex h-full items-center justify-center">

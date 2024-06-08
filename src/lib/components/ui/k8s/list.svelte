@@ -28,7 +28,7 @@
 			variant={buttonConfig.selectedItemName === title ? 'default' : 'ghost'}
 		>
 			<div class="flex w-full items-center justify-between truncate">
-				<span use:addDots={30}>{title}</span>
+				<span use:addDots={40}>{title}</span>
 				{#if buttonConfig.selectedItemName == title}
 					<ChevronRight class="h-4 w-4" />
 				{/if}

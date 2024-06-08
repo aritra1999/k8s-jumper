@@ -77,3 +77,14 @@ export function filterItemListBySearchString(
 	}
 	return items;
 }
+
+export const scrollToBottom = (node: HTMLElement) => {
+	const scroll = () =>
+		node.scroll({
+			top: Number(node.scrollHeight),
+			behavior: 'smooth'
+		});
+	scroll();
+
+	return { update: scroll };
+};

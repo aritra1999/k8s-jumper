@@ -1,14 +1,16 @@
 <script>
-	import Navbar from '$lib/components/ui/nav/navbar.svelte';
-	import { ModeWatcher } from 'mode-watcher';
 	import '../app.pcss';
 	import '../fonts.pcss';
+	import Navbar from '$lib/components/ui/nav/navbar.svelte';
+	import { navItems } from '$lib/constants';
+	import { ModeWatcher } from 'mode-watcher';
+	import { page } from '$app/stores';
 </script>
 
-<ModeWatcher />
+<ModeWatcher defaultMode={'light'} />
 <main class="bg-backgound">
 	<Navbar />
-	<div class="w-screen pl-16">
+	<div class="h-screen w-screen pl-16">
 		<slot />
 	</div>
 </main>
