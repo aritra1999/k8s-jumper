@@ -46,6 +46,7 @@
 		"@kubernetes/client-node": "^0.21.0",
 		"bits-ui": "^0.16.0",
 		"clsx": "^2.1.0",
+		"cmdk-sv": "^0.0.17",
 		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.379.0",
 		"mode-watcher": "^0.3.0",
