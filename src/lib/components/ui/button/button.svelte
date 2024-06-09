@@ -37,8 +37,6 @@
 			<slot />
 		</span>
 	{:else}
-		<span class="relative flex w-full items-center justify-center">
-			<slot />
-		</span>
+		<slot />
 	{/if}
 </ButtonPrimitive.Root>
