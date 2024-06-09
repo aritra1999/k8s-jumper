@@ -10,8 +10,6 @@
 	export let resources: any;
 	export let type: string;
 
-	$: console.log(resources);
-
 	let filteredItems = resources;
 </script>
 

@@ -88,3 +88,5 @@ export const scrollToBottom = (node: HTMLElement) => {
 
 	return { update: scroll };
 };
+
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
