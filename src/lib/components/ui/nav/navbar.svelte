@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import * as Tooltip from '$lib/components/ui/tooltip';
 	import ThemeToggle from '$lib/components/ui/nav/toggle.svelte';
 	import { cn } from '$lib/utils';
 	import { navbarItemSections } from '$lib/constants';
@@ -17,10 +16,14 @@
 			{#each navbarItemSections as navbarItems}
 				<ul class="border-foreground last:border-t-2">
 					{#each navbarItems as navbarItem}
-						<a href={navbarItem.link} target={navbarItem.name == 'Github' ? '_blank' : ''}>
+						<a
+							href={navbarItem.link}
+							target={navbarItem.name == 'Github' ? '_blank' : ''}
+							class="h-16"
+						>
 							<li
 								class={cn(
-									'flex flex-col items-center border-b-2 border-foreground py-5',
+									'jus flex h-16 items-center justify-center border-b-2 border-foreground',
 									navbarItem.hover,
 									isSelected(navbarItem.link) && navbarItem.color
 								)}
@@ -28,14 +31,7 @@
 								{#if navbarItem.name === 'Theme Toggle'}
 									<ThemeToggle />
 								{:else}
-									<Tooltip.Root>
-										<Tooltip.Trigger asChild let:builder>
-											<svelte:component this={navbarItem.icon} class="h-5 w-5" />
-										</Tooltip.Trigger>
-										<Tooltip.Content>
-											<p>{navbarItem.name}</p>
-										</Tooltip.Content>
-									</Tooltip.Root>
+									<svelte:component this={navbarItem.icon} class="h-5 w-5" />
 								{/if}
 							</li>
 						</a>
