@@ -14,7 +14,12 @@
 	onMount(async () => {
 		monaco = (await import('./monaco')).default;
 		const editor = await monaco.editor.create(editorContainer, {
-			readOnly
+			readOnly,
+			minimap: {
+				enabled: false
+			},
+			fontFamily: 'JetBrains Mono',
+			fontSize: 14
 		});
 
 		monaco.editor.defineTheme('vesper', theme as Monaco.editor.IStandaloneThemeData);
