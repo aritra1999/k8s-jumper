@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { sleep } from '$lib/utils';
 	import { Button } from '$lib/components/ui/button';
-	import { Textarea } from '$lib/components/ui/textarea';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import Loader from '$lib/components/ui/loader/loader.svelte';
 	import { Loader2, Play, Settings } from 'lucide-svelte';
@@ -84,11 +83,11 @@
 	</div>
 {:then contexts}
 	<section class="h-full w-full overflow-x-hidden overflow-y-hidden">
-		<section class="flex h-16 w-full border-b-2 border-foreground">
-			<div class="h-16 w-5/12 border-r-2 border-foreground">
+		<section class="flex h-[62px] w-full">
+			<div class="h-full w-5/12 border-r-2 border-foreground">
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
-						<Button variant="ghost" class="h-16 w-full outline-none" builders={[builder]}>
+						<Button variant="ghost" class="z-10 h-full w-full" builders={[builder]}>
 							contexts
 						</Button>
 					</DropdownMenu.Trigger>
@@ -105,11 +104,11 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			</div>
-			<div class="h-16 w-5/12">
+			<div class="h-full w-5/12">
 				<NamespaceDropdown {contexts} />
 			</div>
-			<div class="h-16 w-2/12">
-				<Button on:click={execute} disabled={executing} class="h-16 w-full" fancy={false}>
+			<div class="h-full w-2/12">
+				<Button on:click={execute} disabled={executing} class="h-full w-full" fancy={false}>
 					execute
 					{#if executing}
 						<Loader2 class="ml-4 h-4 w-4 animate-spin" />
@@ -119,7 +118,7 @@
 				</Button>
 			</div>
 		</section>
-		<section class="h-48 w-full bg-foreground">
+		<section class="z-50 h-[194px] w-full border-b-2 border-foreground bg-foreground">
 			<Editor code={query} readOnly={false} language="sql" />
 		</section>
 		{#if !executing}

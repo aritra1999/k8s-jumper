@@ -15,7 +15,7 @@
 	$: filteredItems = filterItemListBySearchString(items, searchFor, selector);
 </script>
 
-<div class="flex items-center justify-between border-b-2 border-foreground p-2.5">
+<div class="flex h-16 items-center justify-between border-b-2 border-foreground p-3">
 	<div class="mr-2 w-full">
 		{#if showSearch}
 			<Input type="text" bind:value={searchFor} />

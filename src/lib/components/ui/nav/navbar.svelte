@@ -16,11 +16,7 @@
 			{#each navbarItemSections as navbarItems}
 				<ul class="border-foreground last:border-t-2">
 					{#each navbarItems as navbarItem}
-						<a
-							href={navbarItem.link}
-							target={navbarItem.name == 'Github' ? '_blank' : ''}
-							class="h-16"
-						>
+						<a href={navbarItem.link} target={navbarItem.name == 'Github' ? '_blank' : ''}>
 							<li
 								class={cn(
 									'jus flex h-16 items-center justify-center border-b-2 border-foreground',

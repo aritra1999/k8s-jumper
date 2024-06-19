@@ -2,7 +2,6 @@
 	import _ from 'lodash';
 	import SelectSearch from '$lib/components/ui/select-search/select-search.svelte';
 
-	export let contexts;
 	let selector = 'metadata.name';
 	const namespaces = [
 		{
